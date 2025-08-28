@@ -163,7 +163,7 @@
                                     <div class="card-body text-center">
                                         <i class="fas fa-box-open fa-2x text-primary mb-2"></i>
                                         <h6 class="text-primary fw-bold">Total Products</h6>
-                                        <h3 class="fw-bold mt-2">{{ $totalProducts }}</h3>
+                                        <h3 class="fw-bold mt-2"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                                     <div class="card-body text-center">
                                         <i class="fas fa-shopping-cart fa-2x text-success mb-2"></i>
                                         <h6 class="text-success fw-bold">Total Orders</h6>
-                                        <h3 class="fw-bold mt-2">{{ $totalOrders }}</h3>
+                                        <h3 class="fw-bold mt-2"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                                     <div class="card-body">
                                         <i class="fas fa-hourglass-half fa-lg text-warning mb-2"></i>
                                         <h6 class="fw-bold text-warning">Pending</h6>
-                                        <h4 class="fw-bold">{{ $ordersByStatus['pending'] }}</h4>
+                                        <h4 class="fw-bold"></h4>
                                     </div>
                                 </div>
                             </div>
@@ -197,7 +197,7 @@
                                     <div class="card-body">
                                         <i class="fas fa-cogs fa-lg text-primary"></i>
                                         <h6 class="fw-bold text-primary">Processing</h6>
-                                        <h4 class="fw-bold">{{ $ordersByStatus['processing'] }}</h4>
+                                        <h4 class="fw-bold"></h4>
                                     </div>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                                     <div class="card-body">
                                         <i class="fas fa-flag-checkered fa-lg text-success"></i>
                                         <h6 class="fw-bold text-success">Completed</h6>
-                                        <h4 class="fw-bold">{{ $ordersByStatus['completed'] }}</h4>
+                                        <h4 class="fw-bold"></h4>
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +217,7 @@
                                     <div class="card-body">
                                         <i class="fas fa-times-circle fa-lg text-danger"></i>
                                         <h6 class="fw-bold text-danger">Cancelled</h6>
-                                        <h4 class="fw-bold">{{ $ordersByStatus['cancelled'] }}</h4>
+                                        <h4 class="fw-bold"></h4>
                                     </div>
                                 </div>
                             </div>

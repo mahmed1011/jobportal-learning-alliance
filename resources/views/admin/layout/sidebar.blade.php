@@ -20,27 +20,27 @@
             </a>
         </li>
 
-        @can('categories')
+        {{-- @can('departments') --}}
             <!-- Category -->
             <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Categories</span>
+                <span class="menu-header-text">Departments</span>
             </li>
             <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-category-alt"></i>
-                    <div data-i18n="Account Settings">Categories</div>
+                    <div data-i18n="Account Settings">Departments</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('categories') }}" class="menu-link">
-                            <div data-i18n="Account">View Category</div>
+                        <a href="{{ route('departments.index') }}" class="menu-link">
+                            <div data-i18n="Account">View Department</div>
                         </a>
                     </li>
                 </ul>
             </li>
-        @endcan
+        {{-- @endcan --}}
 
-        @can('products')
+        {{-- @can('products')
             <!-- Products -->
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Products</span>
@@ -58,9 +58,9 @@
                     </li>
                 </ul>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('orders')
+        {{-- @can('orders')
             <!-- Orders -->
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Orders</span>
@@ -118,7 +118,7 @@
                     </li>
                 </ul>
             </li>
-        @endcan
+        @endcan --}}
 
         @can('user management')
             <!-- Users Management -->
@@ -179,5 +179,12 @@
                 </ul>
             </li>
         @endcan
+
+        <li class="menu-item active mt-3">
+            <a href="{{ route('cacheclear') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-dlear"></i>
+                <div data-i18n="Analytics">Cache Clear</div>
+            </a>
+        </li>
     </ul>
 </aside>
