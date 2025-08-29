@@ -21,23 +21,99 @@
         </li>
 
         {{-- @can('departments') --}}
-            <!-- Category -->
+        <!-- Category -->
+
+        {{-- Departments --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Departments</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-buildings"></i>
+                <div data-i18n="Departments">Departments</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('departments.index') }}" class="menu-link">
+                        <div data-i18n="View">View Departments</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {{-- Employment Types --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Employment Types</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-briefcase-alt-2"></i>
+                <div data-i18n="Employment Types">Employment Types</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('employment-types.index') }}" class="menu-link">
+                        <div data-i18n="View">View Employment Types</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {{-- Locations --}}
+        {{-- <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Locations</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-map"></i>
+                <div data-i18n="Locations">Locations</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('locations.index') }}" class="menu-link">
+                        <div data-i18n="View">View Locations</div>
+                    </a>
+                </li>
+            </ul>
+        </li> --}}
+
+        {{-- Campuses --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Campuses</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-building-house"></i>
+                <div data-i18n="Campuses">Campuses</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('campuses.index') }}" class="menu-link">
+                        <div data-i18n="View">View Campuses</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        @can('job management')
+            {{-- Jobs --}}
             <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Departments</span>
+                <span class="menu-header-text">Manage Jobs</span>
             </li>
             <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bx-category-alt"></i>
-                    <div data-i18n="Account Settings">Departments</div>
+                    <i class="menu-icon tf-icons bx bx-briefcase"></i>
+                    <div data-i18n="Jobs">Manage Jobs</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('departments.index') }}" class="menu-link">
-                            <div data-i18n="Account">View Department</div>
+                        <a href="{{ route('jobs.index') }}" class="menu-link">
+                            <div data-i18n="View">View Jobs</div>
                         </a>
                     </li>
                 </ul>
             </li>
+        @endcan
+
         {{-- @endcan --}}
 
         {{-- @can('products')
@@ -132,7 +208,7 @@
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('users') }}" class="menu-link">
+                        <a href="{{ route('users.index') }}" class="menu-link">
                             <div data-i18n="Account">View Users</div>
                         </a>
                     </li>

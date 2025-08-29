@@ -14,7 +14,7 @@ class DepartmentController extends Controller
     {
         try {
             $departments = Department::all();
-            return view('admin.departments.show-departments', compact('departments'));
+            return view('admin.Departments.show-departments', compact('departments'));
         } catch (\Exception $e) {
             Log::error('Department Index Error: ' . $e->getMessage());
             return back()->with('error', 'Unable to fetch departments.');

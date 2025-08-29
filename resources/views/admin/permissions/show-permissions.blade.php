@@ -143,7 +143,8 @@
         </div>
 
 
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     </body>
 
     </html>

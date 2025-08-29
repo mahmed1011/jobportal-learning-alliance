@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use App\Models\Campus;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,13 +18,9 @@ class UserController extends Controller
     {
         $users = User::with('roles')->get();
         $roles = Role::all(); // Spatie Role model
-        return view('admin.users-managment.show-users', compact('users','roles'));
-    }
+        $campuses = Campus::all(); // ✅ add campuses list
 
-    public function create()
-    {
-        $roles = Role::all();
-        return view('users.create', compact('roles'));
+        return view('admin.users-managment.show-users', compact('users', 'roles', 'campuses'));
     }
 
     public function store(Request $request)
@@ -31,7 +29,9 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'role' => 'required|exists:roles,name'
+            'role' => 'required|exists:roles,name',
+            'campus_ids' => 'nullable|array', // ✅ allow multiple
+            'campus_ids.*' => 'exists:campuses,id',
         ]);
 
         DB::beginTransaction();
@@ -40,24 +40,19 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'campus_id' => $request->campus_ids ? json_encode($request->campus_ids) : null, // ✅ store as JSON
             ]);
 
             $user->assignRole($request->role);
             DB::commit();
 
-            return redirect()->route('users')->with('success', 'User created successfully.');
+            return redirect()->route('users.index')->with('success', 'User created successfully.');
         } catch (\Exception $e) {
             DB::rollback();
             return back()->with('error', 'Failed to create user.');
         }
     }
 
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        $roles = Role::all();
-        return view('admin.users-managment.form', compact('user', 'roles'));
-    }
 
     public function update(Request $request, $id)
     {
@@ -65,7 +60,9 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:6',
-            'role' => 'required|exists:roles,name'
+            'role' => 'required|exists:roles,name',
+            'campus_ids' => 'nullable|array',
+            'campus_ids.*' => 'exists:campuses,id',
         ]);
 
         DB::beginTransaction();
@@ -78,14 +75,17 @@ class UserController extends Controller
                 $user->password = Hash::make($request->password);
             }
 
+            $user->campus_id = $request->campus_ids ? json_encode($request->campus_ids) : null; // ✅ update
             $user->save();
 
             $user->syncRoles([$request->role]);
             DB::commit();
 
-            return redirect()->route('users')->with('success', 'User updated successfully.');
+            return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } catch (\Exception $e) {
+
             DB::rollback();
+            Log::error('User Update Error: ' . $e->getMessage());
             return back()->with('error', 'Failed to update user.');
         }
     }
@@ -93,6 +93,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::destroy($id);
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 }

@@ -12,10 +12,10 @@
                 <div class="layout-page">
                     <div class="card mt-5 shadow-sm rounded" style="margin: 31px;">
                         <div class="card-header d-flex justify-content-between align-items-center bg-light border-bottom">
-                            <h5 class="mb-0">All Departments</h5>
-                            <button id="addDeptBtn" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#departmentModal">
-                                <i class="bx bx-plus icon-sm"></i> Add Department
+                            <h5 class="mb-0">All Locations</h5>
+                            <button id="addLocationBtn" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#locationModal">
+                                <i class="bx bx-map icon-sm"></i> Add Location
                             </button>
                         </div>
 
@@ -24,28 +24,31 @@
                                 <thead class="table-light">
                                     <tr class="text-muted text-uppercase small">
                                         <th>#</th>
-                                        <th>Department Name</th>
+                                        <th>City</th>
+                                        <th>Area</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($departments as $key => $department)
+                                    @foreach ($locations as $key => $location)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $department->name }}</td>
+                                            <td>{{ $location->city }}</td>
+                                            <td>{{ $location->area ?? '-' }}</td>
                                             <td class="text-center">
-                                                <a href="javascript:void(0);" class="text-primary fs-5 editDepartmentBtn"
-                                                    data-id="{{ $department->id }}" data-name="{{ $department->name }}"
-                                                    data-bs-toggle="modal" data-bs-target="#departmentModal">
+                                                <a href="javascript:void(0);" class="text-primary fs-5 editLocationBtn"
+                                                    data-id="{{ $location->id }}" data-city="{{ $location->city }}"
+                                                    data-area="{{ $location->area }}" data-bs-toggle="modal"
+                                                    data-bs-target="#locationModal">
                                                     <i class='bx bx-edit'></i>
                                                 </a>
 
-                                                <form action="{{ route('departments.destroy', $department->id) }}"
+                                                <form action="{{ route('locations.destroy', $location->id) }}"
                                                     method="POST" style="display:inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                        onclick="return confirm('Are you sure you want to delete this department?')"
+                                                        onclick="return confirm('Are you sure you want to delete this location?')"
                                                         class="btn btn-link text-danger fs-5 p-0 m-0">
                                                         <i class='bx bx-trash'></i>
                                                     </button>
@@ -59,67 +62,82 @@
                     </div>
                 </div>
 
-                <!-- Add/Edit Department Modal -->
-                <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel"
+                <!-- Add/Edit Location Modal -->
+                <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form id="departmentForm" method="POST">
+                            <form id="locationForm" method="POST">
                                 @csrf
                                 <div id="formMethod"></div>
 
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="departmentModalLabel">Add Department</h5>
+                                    <h5 class="modal-title" id="locationModalLabel">Add Location</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
 
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="dept_name" class="form-label">Department Name</label>
-                                        <input type="text" name="name" id="dept_name" class="form-control" required>
+                                        <label for="city_name" class="form-label">City</label>
+                                        <select name="city" id="city_name" class="form-select" required>
+                                            <option value="" disabled selected>-- Select City --</option>
+                                            @foreach ($cities as $city)
+                                                <option value="{{ $city->name }}">{{ $city->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="area_name" class="form-label">Area</label>
+                                        <input type="text" name="area" id="area_name" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary" id="modalSubmitBtn">Add
-                                        Department</button>
+                                    <button type="submit" class="btn btn-primary" id="modalSubmitBtn">Add Location</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
+
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {
-                        const form = document.getElementById("departmentForm");
-                        const nameInput = document.getElementById("dept_name");
-                        const title = document.getElementById("departmentModalLabel");
+                        const form = document.getElementById("locationForm");
+                        const cityInput = document.getElementById("city_name");
+                        const areaInput = document.getElementById("area_name");
+                        const title = document.getElementById("locationModalLabel");
                         const methodDiv = document.getElementById("formMethod");
                         const submitBtn = document.getElementById("modalSubmitBtn");
 
                         // ADD button
-                        document.getElementById("addDeptBtn").addEventListener("click", function() {
-                            form.action = "{{ route('departments.store') }}"; // POST
+                        document.getElementById("addLocationBtn").addEventListener("click", function() {
+                            form.action = "{{ route('locations.store') }}"; // POST
                             methodDiv.innerHTML = ""; // clear _method
-                            nameInput.value = ""; // empty field
-                            title.textContent = "Add Department";
-                            submitBtn.textContent = "Add Department";
+                            cityInput.value = "";
+                            areaInput.value = "";
+                            title.textContent = "Add Location";
+                            submitBtn.textContent = "Add Location";
                         });
 
                         // EDIT buttons
-                        document.querySelectorAll(".editDepartmentBtn").forEach(btn => {
+                        document.querySelectorAll(".editLocationBtn").forEach(btn => {
                             btn.addEventListener("click", function() {
                                 let id = this.dataset.id;
-                                let name = this.dataset.name;
+                                let city = this.dataset.city;
+                                let area = this.dataset.area;
 
-                                form.action = "/departments/" + id; // PUT route
+                                form.action = "/locations/" + id; // PUT route
                                 methodDiv.innerHTML = `{!! method_field('PUT') !!}`;
-                                nameInput.value = name; // fill input
-                                title.textContent = "Edit Department";
-                                submitBtn.textContent = "Update Department";
+                                cityInput.value = city;
+                                areaInput.value = area;
+                                title.textContent = "Edit Location";
+                                submitBtn.textContent = "Update Location";
                             });
                         });
                     });
